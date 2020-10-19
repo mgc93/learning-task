@@ -1481,7 +1481,7 @@ var optionsQuizPart2 = [
 
 var points = 0;
 var pay = [];
-function getPointsEarned(img_choices){
+function getPointsEarned(img_choices,payoffs_shown){
     var points_earned = 0;
     const penalty_points = 5;
     for (var i = 0; i < img_choices.length; i++){
@@ -1509,7 +1509,7 @@ function getPayoffEarned(points_earned){
     }
 }
 
-points = getPointsEarned(img_choices);
+points = getPointsEarned(img_choices,payoffs_shown);
 pay = getPayoffEarned(points);
 
 
