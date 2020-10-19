@@ -1667,7 +1667,7 @@ function startExperiment() {
             // memoryQuizPart1,
             // memoryQuizPart2,
             // memoryQuizPart3,
-            // success_guard
+            success_guard
         ],
         on_trial_finish: function () {
             trialcounter = jsPsych.data.get().count();
