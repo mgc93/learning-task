@@ -50,7 +50,7 @@
 // const nprac = 3;
 const nImageInst = 2;
 const debugModeCaliDot = 1;
-const realCaliDot = 12;
+const realCaliDot = 5; // 12
 
 // const feedback_duration = 3000;
 const maxTimeChoice = 3000;
@@ -1247,7 +1247,7 @@ var learning_choice_1 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 5, //63
+    loop_function: () => choice_count < 3, //63
 };
 
 
@@ -1332,7 +1332,7 @@ var learning_choice_2 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 12, // payoffs_base.length
+    loop_function: () => choice_count < 6, // payoffs_base.length
 };
 
 
@@ -1479,19 +1479,19 @@ var optionsQuizPart2 = [
 
 
 
-
+var points = 0;
+var pay = [];
 function getPointsEarned(img_choices){
     var points_earned = 0;
     const penalty_points = 5;
     for (var i = 0; i < img_choices.length; i++){
         if(img_choices[i].key_press === 37){
-            points_earned += payoffs_shown[i][0][0] + payoffs_shown[i][0][1];
-        }
-        if(img_choices[i].key_press === 39){
-            points_earned += payoffs_shown[i][1][0] + payoffs_shown[i][1][1];
-        }
-        if(img_choices[i].key_press !== 39 && img_choices[i].key_press !== 37){
-            points_earned -= penalty_points;
+            points_earned = points_earned + payoffs_shown[i][0][0] + payoffs_shown[i][0][1];
+        } else if(img_choices[i].key_press === 39){
+            points_earned = points_earned + payoffs_shown[i][1][0] + payoffs_shown[i][1][1];
+        } else {
+            // (img_choices[i].key_press !== 39 && img_choices[i].key_press !== 37)
+            points_earned = points_earned - penalty_points;
         }
     }
     return points_earned;
@@ -1509,8 +1509,8 @@ function getPayoffEarned(points_earned){
     }
 }
 
-var points = getPointsEarned(img_choices);
-var pay = getPayoffEarned(points);
+points = getPointsEarned(img_choices);
+pay = getPayoffEarned(points);
 
 
 
