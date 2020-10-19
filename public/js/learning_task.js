@@ -1479,8 +1479,7 @@ var optionsQuizPart2 = [
 
 
 
-var points = 0;
-var pay = [];
+var points = [];
 function getPointsEarned(img_choices,payoffs_shown){
     var points_earned = 0;
     const penalty_points = 5;
@@ -1497,6 +1496,9 @@ function getPointsEarned(img_choices,payoffs_shown){
     return points_earned;
 }
 
+points = getPointsEarned(img_choices,payoffs_shown);
+
+var pay = [];
 function getPayoffEarned(points_earned){
     const minPayoff = 2.5; // min earnings = 2.5
     const thresholdPay = 1505;
@@ -1509,7 +1511,6 @@ function getPayoffEarned(points_earned){
     }
 }
 
-points = getPointsEarned(img_choices,payoffs_shown);
 pay = getPayoffEarned(points);
 
 
@@ -1607,7 +1608,7 @@ var on_finish_callback = function () {
         subject: subject_id,
         subject: subject_id,
         interaction: jsPsych.data.getInteractionData().json(),
-        points: points,
+        points_totsl: points,
         payment: pay,
         windowWidth: screen.width,
         windowHight: screen.height
@@ -1639,18 +1640,18 @@ function startExperiment() {
         timeline: [
             start_exp_survey_trial,
             fullscreenEnter,
-            learningTaskInstructions,
-            controlQuizOverview,
-            controlQuestion1,
-            controlQuestion1Response,
-            controlQuestion2,
-            controlQuestion2Response,
-            controlQuestion3,
-            controlQuestion3Response,
-            controlQuestion4,
-            controlQuestion4Response,
-            controlQuestion5,
-            controlQuestion5Response,
+            // learningTaskInstructions,
+            // controlQuizOverview,
+            // controlQuestion1,
+            // controlQuestion1Response,
+            // controlQuestion2,
+            // controlQuestion2Response,
+            // controlQuestion3,
+            // controlQuestion3Response,
+            // controlQuestion4,
+            // controlQuestion4Response,
+            // controlQuestion5,
+            // controlQuestion5Response,
             eyeTrackingInstruction1, 
             eyeTrackingInstruction2, 
             inital_eye_calibration,
@@ -1659,14 +1660,14 @@ function startExperiment() {
             choiceOverview,
             // recalibration,
             learning_choice_1,
-            breaktime,
-            recalibration2,
-            learning_choice_2,
-            memoryOverview,
-            memoryQuizPart1,
-            memoryQuizPart2,
-            memoryQuizPart3,
-            success_guard
+            // breaktime,
+            // recalibration2,
+            // learning_choice_2,
+            // memoryOverview,
+            // memoryQuizPart1,
+            // memoryQuizPart2,
+            // memoryQuizPart3,
+            // success_guard
         ],
         on_trial_finish: function () {
             trialcounter = jsPsych.data.get().count();
