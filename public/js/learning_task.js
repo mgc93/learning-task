@@ -318,6 +318,12 @@ var get_images = function () {
 };
 
 
+// function makeSurveyCode(status) {
+//     uploadSubjectStatus(status);
+//     var prefix = { 'success': 'cg', 'failed': 'sb' }[status]
+//     return `${prefix}${subject_id}`;
+// }
+
 function makeSurveyCode(status) {
     uploadSubjectStatus(status);
     var prefix = { 'success': 'cg', 'failed': 'sb' }[status]
@@ -1241,7 +1247,7 @@ var learning_choice_1 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 63, 
+    loop_function: () => choice_count < 5, //63
 };
 
 
@@ -1326,7 +1332,7 @@ var learning_choice_2 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < payoffs_base.length, 
+    loop_function: () => choice_count < 10, // payoffs_base.length
 };
 
 
@@ -1596,7 +1602,8 @@ var on_finish_callback = function () {
         subject: subject_id,
         subject: subject_id,
         interaction: jsPsych.data.getInteractionData().json(),
-        //quiz: quiz_correct_count,
+        points: pay[0],
+        pay: pay[1],
         windowWidth: screen.width,
         windowHight: screen.height
     });
@@ -1662,11 +1669,11 @@ function startExperiment() {
                 closeFullscreen()
                 document.body.style.cursor = 'pointer'
                 jsPsych.endExperiment(`<div>
-      Thank you for your participation! You can close the browser to end the experiment now. </br>
-                  The webcam will turn off when you close the browser. </br>
-                    Your survey code is: ${makeSurveyCode('success')}. </br>
-                   We will send you $ ${pay[1]} as your participant fee soon! </br> 
-      </div>`);
+                Thank you for your participation! You can close the browser to end the experiment now. </br>
+                The webcam will turn off when you close the browser. </br>
+                Your survey code is: ${makeSurveyCode('success')}. </br>
+                We will send you $ ${pay[1]} as your participant fee soon! </br> 
+                </div>`);
             }
             if (trialcounter == 21) {
                 on_finish_callback();
