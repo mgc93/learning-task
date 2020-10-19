@@ -1332,7 +1332,7 @@ var learning_choice_2 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 10, // payoffs_base.length
+    loop_function: () => choice_count < 12, // payoffs_base.length
 };
 
 
