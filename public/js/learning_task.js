@@ -1479,23 +1479,23 @@ function getPointsEarned(img_choices){
     var payoff_earned = 0;
     const minPayoff = 2.5; // min earnings = 2.5
     const thresholdPay = 1505;
-    const penalty_points = 2;
+    const penalty_points = 5;
     for (var i = 0; i < img_choices.length; i++){
-        if(img_choices[i].key_press === 70){
+        if(img_choices[i].key_press === 37){
             points_earned += payoffs_shown[i][0][0] + payoffs_shown[i][0][1];
         }
-        if(img_choices[i].key_press === 74){
+        if(img_choices[i].key_press === 39){
             points_earned += payoffs_shown[i][1][0] + payoffs_shown[i][1][1];
         }
-        if(img_choices[i].key_press !== 70 && img_choices[i].key_press !== 74){
+        if(img_choices[i].key_press !== 39 && img_choices[i].key_press !== 37){
             points_earned -= penalty_points;
         }
     }
-    payoff_earned = 0.02*(points_earned - thresholdPay); // max earnings = 7
+    payoff_earned = 0.03*(points_earned - thresholdPay); // max earnings = 7 - max possible points 350
     if(payoff_earned<minPayoff) {
         return [points_earned, minPayoff];
     } else {
-        return [points_earned, round(payoff_earned)];
+        return [points_earned, payoff_earned.toFixed(2)];
     }
 }
 
