@@ -30,6 +30,12 @@ jsPsych.plugins["binary-choice"] = (function () {
         default: 0,
         description: 'timing_response.'
       },
+      stimulus_duration: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'stimulus_duration',
+        default: null,
+        description: 'Display time of stimulus, regardless of when choice is made'
+      },
       doEyeTracking: {
         type: jsPsych.plugins.parameterType.BOOL,
         pretty_name: 'eye-tracking',
@@ -41,6 +47,30 @@ jsPsych.plugins["binary-choice"] = (function () {
         pretty_name: 'eye-tracking',
         default: true,
         description: 'Whether it is a real choice, real- true'
+      },
+      exp_condition: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'exp_condition',
+        default: 0,
+        description: 'Condition of the experiment.'
+      },
+      exp_image_set: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'exp_image_set',
+        default: 0,
+        description: 'Image set used in the experiment.'
+      },
+      stimulus_payoff_base: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'stimulus_payoff_base',
+        default: 0,
+        description: 'Underlying payoff of the stimuli.'
+      },
+      stimulus_payoff_noise: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'stimulus_payoff_noise',
+        default: 0,
+        description: 'Noise payoff of the sitmuli.'
       }
       }  
   };
@@ -58,7 +88,9 @@ jsPsych.plugins["binary-choice"] = (function () {
     trial.choices = trial.choices || [];
     //trial.timing_stim = trial.timing_stim || -1;
     trial.timing_response = trial.timing_response || -1;
-    var selected_color = 'rgb(5, 157, 190)';
+    // trial.display_time = trial.display_time || -1;
+    // var selected_color = 'rgb(5, 157, 190)';
+    var selected_color = 'rgb(139, 0, 0)';
     var setTimeoutHandlers = [];
     var keyboardListener;
    
@@ -81,24 +113,25 @@ jsPsych.plugins["binary-choice"] = (function () {
 
       new_html += '<div class="container-multi-choice">';
       new_html += '<div class="container-multi-choice-column" id= "multiattribute-choices-stimulus-left">';
-      new_html += `<div id="multiattribute-choices-stimulus-left " ><img height="320px" width="450px" src="${trial.stimulus[0]}"/></div>`;
+      new_html += `<img class = "img_stimuli" src="${trial.stimulus[0]}"/>`;
       new_html += '</div>';
       new_html += '<div class="container-multi-choice-column" id= "multiattribute-choices-stimulus-right">';
-      new_html += `<div id="multiattribute-choices-stimulus-right " ><img height="320px" width="450px" src="${trial.stimulus[1]}"/></div>`;
+      new_html += `<img class = "img_stimuli" src="${trial.stimulus[1]}"/>`;
       new_html += '</div>';
       new_html += '<div id="binary-timeoutinfo"></div>';
       new_html += '</div>';
       display_element.innerHTML = new_html;
     };
 
+    // to display a border around the chosen option
     var display_selection = function () {
       var selected;
-      if (String.fromCharCode(response.key) == trial.choices[0]) {
+      if (jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(response.key) == trial.choices[0]) {
         selected = '#multiattribute-choices-stimulus-left';
       } else {
         selected = '#multiattribute-choices-stimulus-right';
       }
-      $(selected).css('border', `6px solid ${selected_color}`);
+      $(selected).css('border', `4px solid ${selected_color}`);
     };
 
     var display_timeout = function () {
@@ -130,7 +163,11 @@ jsPsych.plugins["binary-choice"] = (function () {
             kill_timers();
             response = info;
             display_selection();
-            setTimeout(() => end_trial(false), 500);
+            if (trial.stimulus_duration === null) {
+              setTimeout(() => end_trial(false), 500);
+            } else { 
+              setTimeout(() => end_trial(false), trial.stimulus_duration - response.rt);
+            }
           },
         });
       }
@@ -148,7 +185,7 @@ jsPsych.plugins["binary-choice"] = (function () {
         var response_timer = setTimeout(function () {
           kill_listeners();
           display_timeout();
-          setTimeout(() => end_trial(true), 500);
+          setTimeout(() => end_trial(true), 500); 
         }, trial.timing_response);
          setTimeoutHandlers.push(response_timer);
       }
@@ -208,7 +245,7 @@ jsPsych.plugins["binary-choice"] = (function () {
             'elapse-time': performance.now() - starttime
           });
         }
-      },80);
+      },20);
     }
 
     

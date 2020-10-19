@@ -39,7 +39,7 @@ const body_parser = require("body-parser");
 // };
 
 const dbx = new Dropbox({
-    accessToken: 'DNbcoilgmnsAAAAAAAAAAZuml-fTGBSNODuaPd-Dv7-27J5_AZsbXjTsA7d6l3kq',
+    accessToken: 'eBpNn9TYElsAAAAAAAAAAXW9QmEYqqOfJHlcBniDBPC_q30Tkwc8m9e8k1WFXGdy',
     fetch
 });
 
@@ -48,15 +48,15 @@ saveDropbox = function (content, filename, foldername) {
     return dbx.filesGetMetadata({
         path: "/" + foldername,
     }).catch(err => {
-        //      console.log(err['error']['path'])
-        if (err.error.error.path['.tag'] == 'not_found') {
-            return dbx.filesCreateFolder({
-                path: "/" + foldername,
-                autorename: false,
-            });
-        } else {
-            throw err;
-        }
+        // //      console.log(err['error']['path'])
+        // if (err.error.error.path['.tag'] == 'not_found') {
+        //     return dbx.filesCreateFolder({
+        //         path: "/" + foldername,
+        //         autorename: false,
+        //     });
+        // } else {
+        //     throw err;
+        // }
     }).then(() => {
         return dbx.filesUpload({
             path: "/" + foldername + "/" + filename,
@@ -114,7 +114,11 @@ app.post("/subject-status", function (request, response) {
 });
 
 
-//start the server
-app.listen(app.get('port'), function () {
-    console.log("listening to port");
+// //start the server
+// app.listen(app.get('port'), function () {
+//     console.log("listening to port");
+// });
+
+app.listen(process.env.PORT, function() {
+    console.log("listening to port")
 });
