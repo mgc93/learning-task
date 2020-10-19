@@ -1482,9 +1482,6 @@ var optionsQuizPart2 = [
 
 function getPointsEarned(img_choices){
     var points_earned = 0;
-    var payoff_earned = [];
-    const minPayoff = 2.5; // min earnings = 2.5
-    const thresholdPay = 1505;
     const penalty_points = 5;
     for (var i = 0; i < img_choices.length; i++){
         if(img_choices[i].key_press === 37){
@@ -1497,15 +1494,23 @@ function getPointsEarned(img_choices){
             points_earned -= penalty_points;
         }
     }
+    return points_earned;
+}
+
+function getPayoffEarned(points_earned){
+    const minPayoff = 2.5; // min earnings = 2.5
+    const thresholdPay = 1505;
+    var payoff_earned = [];
     payoff_earned = 0.03*(points_earned - thresholdPay); // max earnings - max possible points 350
     if(payoff_earned<=minPayoff) {
-        return [points_earned, minPayoff];
+        return minPayoff;
     } else {
-        return [points_earned, payoff_earned.toFixed(2)];
+        return payoff_earned.toFixed(2);
     }
 }
 
-var pay = getPointsEarned(img_choices);
+var points = getPointsEarned(img_choices);
+var pay = getPayoffEarned(points);
 
 
 
@@ -1602,8 +1607,8 @@ var on_finish_callback = function () {
         subject: subject_id,
         subject: subject_id,
         interaction: jsPsych.data.getInteractionData().json(),
-        points: pay[0],
-        pay: pay[1],
+        points: points,
+        payment: pay,
         windowWidth: screen.width,
         windowHight: screen.height
     });
@@ -1672,7 +1677,7 @@ function startExperiment() {
                 Thank you for your participation! You can close the browser to end the experiment now. </br>
                 The webcam will turn off when you close the browser. </br>
                 Your survey code is: ${makeSurveyCode('success')}. </br>
-                We will send you $ ${pay[1]} as your participant fee soon! </br> 
+                We will send you $ ${pay} as your participant fee soon! </br> 
                 </div>`);
             }
             if (trialcounter == 21) {
