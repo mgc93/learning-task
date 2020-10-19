@@ -1482,7 +1482,7 @@ var optionsQuizPart2 = [
 
 function getPointsEarned(img_choices){
     var points_earned = 0;
-    var payoff_earned = 0;
+    var payoff_earned = [];
     const minPayoff = 2.5; // min earnings = 2.5
     const thresholdPay = 1505;
     const penalty_points = 5;
@@ -1497,8 +1497,8 @@ function getPointsEarned(img_choices){
             points_earned -= penalty_points;
         }
     }
-    payoff_earned = 0.03*(points_earned - thresholdPay); // max earnings = 7 - max possible points 350
-    if(payoff_earned<minPayoff) {
+    payoff_earned = 0.03*(points_earned - thresholdPay); // max earnings - max possible points 350
+    if(payoff_earned<=minPayoff) {
         return [points_earned, minPayoff];
     } else {
         return [points_earned, payoff_earned.toFixed(2)];
