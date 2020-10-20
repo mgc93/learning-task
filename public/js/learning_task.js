@@ -1247,7 +1247,7 @@ var learning_choice_1 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 3, //63
+    loop_function: () => choice_count < 5, //63
 };
 
 
@@ -1332,7 +1332,7 @@ var learning_choice_2 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 6, // payoffs_base.length
+    loop_function: () => choice_count < 10, // payoffs_base.length
 };
 
 
@@ -1608,7 +1608,7 @@ var on_finish_callback = function () {
         subject: subject_id,
         subject: subject_id,
         interaction: jsPsych.data.getInteractionData().json(),
-        points_totsl: points,
+        points_total: points,
         payment: pay,
         windowWidth: screen.width,
         windowHight: screen.height
@@ -1640,18 +1640,18 @@ function startExperiment() {
         timeline: [
             start_exp_survey_trial,
             fullscreenEnter,
-            // learningTaskInstructions,
-            // controlQuizOverview,
-            // controlQuestion1,
-            // controlQuestion1Response,
-            // controlQuestion2,
-            // controlQuestion2Response,
-            // controlQuestion3,
-            // controlQuestion3Response,
-            // controlQuestion4,
-            // controlQuestion4Response,
-            // controlQuestion5,
-            // controlQuestion5Response,
+            learningTaskInstructions,
+            controlQuizOverview,
+            controlQuestion1,
+            controlQuestion1Response,
+            controlQuestion2,
+            controlQuestion2Response,
+            controlQuestion3,
+            controlQuestion3Response,
+            controlQuestion4,
+            controlQuestion4Response,
+            controlQuestion5,
+            controlQuestion5Response,
             eyeTrackingInstruction1, 
             eyeTrackingInstruction2, 
             inital_eye_calibration,
@@ -1660,13 +1660,13 @@ function startExperiment() {
             choiceOverview,
             // recalibration,
             learning_choice_1,
-            // breaktime,
-            // recalibration2,
-            // learning_choice_2,
-            // memoryOverview,
-            // memoryQuizPart1,
-            // memoryQuizPart2,
-            // memoryQuizPart3,
+            breaktime,
+            recalibration2,
+            learning_choice_2,
+            memoryOverview,
+            memoryQuizPart1,
+            memoryQuizPart2,
+            memoryQuizPart3,
             success_guard
         ],
         on_trial_finish: function () {
