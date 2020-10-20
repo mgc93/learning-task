@@ -1477,9 +1477,6 @@ var optionsQuizPart2 = [
 };
 
 
-
-
-var points = [];
 function getPointsEarned(img_choices,payoffs_shown){
     var points_earned = 0;
     const penalty_points = 5;
@@ -1496,9 +1493,7 @@ function getPointsEarned(img_choices,payoffs_shown){
     return points_earned;
 }
 
-points = getPointsEarned(img_choices,payoffs_shown);
 
-var pay = [];
 function getPayoffEarned(points_earned){
     const minPayoff = 2.5; // min earnings = 2.5
     const thresholdPay = 1505;
@@ -1510,9 +1505,6 @@ function getPayoffEarned(points_earned){
         return payoff_earned.toFixed(2);
     }
 }
-
-pay = getPayoffEarned(points);
-
 
 
 
@@ -1563,11 +1555,16 @@ function getRandomInt(min, max) {
 //     return html
 // }
 
-
+var pay = 0;
+var points = 0;
 var successExp = false
 var success_guard = {
     type: 'call-function',
-    func: () => { successExp = true }
+    func: () => { 
+        successExp = true;
+        points = getPointsEarned(img_choices,payoffs_shown);
+        pay = getPayoffEarned(points);
+     }
 }
 
 
