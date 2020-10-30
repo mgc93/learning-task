@@ -12,7 +12,7 @@
 // const nprac = 3;
 const nImageInst = 2;
 const debugModeCaliDot = 1;
-const realCaliDot = 5; // 12
+const realCaliDot = 12; // 12
 
 // const feedback_duration = 3000;
 const maxTimeChoice = 3000;
