@@ -627,9 +627,28 @@ var controlQuestion1Response = {
           return `
           <div>Your answer was correct!</div>
           <br><br/> 
-          When you are ready, press the  <b>SPACE BAR</b> to continue. 
-          <br><br/> 
-          </div>`;
+            <div>Round 31 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_1.png"></img>
+            <div>Round 32 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_2.png"></img>
+            <div>Question 1: What does the top number (+4) in Round 31 represent? 
+            <br><br/>
+            The first payoff for the dark gray square <br>
+            The payoff is not relevant to the task <br>
+            The first payoff for the white square <br>
+            The second payoff for the dark gray square 
+            <br><br/>
+            The correct answer is: <font color = 'green';>the first payoff for the dark gray square </font>.
+            <br><br/>
+            In round 31, it can be inferred from the feedback screen that the dark gray square was chosen in that round and the white square was chosen in the previous round. 
+            <br><br/>
+            Recall that each image will give you 2 payoffs; <br>
+            one immediately after your choice (always the top image) and one in the next round (always the bottom image). <br>
+            Therefore, the number +4 on the top image (the dark gray square) represents <font color = 'green';>the first payoff for the dark gray square </font>. 
+            <br><br/>
+            When you are ready, press the  <b>SPACE BAR</b> to continue. 
+            <br><br/> </div>
+          `;
         } else {
           return `
           <div>Your answer was incorrect!</div>
@@ -702,6 +721,25 @@ var controlQuestion2Response = {
           return `
           <div>Your answer was correct!</div>
           <br><br/> 
+            <div>Round 31 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_1.png"></img>
+            <div>Round 32 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_2.png"></img>
+            <div> Question 2: What does the bottom number (+9) in Round 31 represent? 
+            <br><br/>
+            The payoff is not relevant to the task <br>
+            The first payoff for the white square <br>
+            The second payoff for the white square <br>
+            The first payoff for the dark gray square 
+            <br><br/>
+            The correct answer is: <font color = 'green';> the second payoff for the white square </font>.
+            <br><br/>
+            In round 31, it can be inferred from the feedback screen that the dark gray square was chosen in that round and the white square was chosen in the previous round. 
+            <br><br/>
+            Recall that each image will give you 2 payoffs; <br>
+            one immediately after your choice (always the top image) and one in the next round (always the bottom image). <br>
+            Therefore, the number +9 on the bottom image (the white square) represents  <font color = 'green';>the second payoff for the white square </font>. 
+            <br><br/>
           When you are ready, press the  <b>SPACE BAR</b> to continue. 
           <br><br/> 
           </div>`;
@@ -777,6 +815,24 @@ var controlQuestion3Response = {
           return `
           <div>Your answer was correct!</div>
           <br><br/> 
+            <div>Round 31 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_1.png"></img>
+            <div>Round 32 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_2.png"></img>
+            <div> Question 3: What is your total payoff for Round 31? 
+            <br><br/>
+            4 <br>
+            9 <br>
+            11 <br>
+            13 
+            <br><br/>
+            The correct answer is: <font color = 'green';> 13 </font>. <br>
+            <br><br/>
+            Your total payoff in points for a round is the sum of the payoffs for that round. In this case, for round 31 you got: <br>
+            + 4 as the first payoff for the dark gray square chosen in that round.<br>
+            + 9 as the second payoff for the white square chosen in the previous round.<br>
+            Your total payoff is therefore: 4 + 9 = <font color = 'green';> 13 </font>.
+            <br><br/>
           When you are ready, press the  <b>SPACE BAR</b> to continue. 
           <br><br/> 
           </div>`;
@@ -852,6 +908,23 @@ var controlQuestion4Response = {
           return `
           <div>Your answer was correct!</div>
           <br><br/> 
+            <div>Round 31 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_1.png"></img>
+            <div>Round 32 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_2.png"></img>
+            <div> Question 4: What is the total payoff of the dark gray square from Round 31 and Round 32? 
+            <br><br/>
+            12 <br>
+            16 <br>
+            13 
+            <br><br/>
+            The correct answer is: <font color = 'green';> 12 </font>. <br>
+            <br><br/>
+            Recall that each image will give you 2 payoffs; <br>
+            one immediately after your choice (always the top image) and one in the next round (always the bottom image). <br>
+            The dark gray square gives you + 4 in round 31 and + 8 in round 32. <br>
+            Therefore, the total payoff for the dark gray square is <font color = 'green';> 12 </font>.
+            <br><br/>
           When you are ready, press the  <b>SPACE BAR</b> to continue. 
           <br><br/> 
           </div>`;
@@ -926,6 +999,22 @@ var controlQuestion5Response = {
           return `
           <div>Your answer was correct!</div>
           <br><br/> 
+            <div>Round 31 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_1.png"></img>
+            <div>Round 32 – Feedback screen</div>
+            <img class = 'img_questions' src="img/control/control_img_2.png"></img>
+            <div> Question 5: What was chosen in Round 32? 
+            <br><br/>
+            The dark gray square <br>
+            The light gray square 
+            <br><br/>
+            The correct answer is: <font color = 'green';> the light gray square </font>. <br>
+            <br><br/>
+            Recall that each image will give you 2 payoffs; <br>
+            one immediately after your choice (always the top image) and one in the next round (always the bottom image). <br>
+            In round 32, it can be inferred from the feedback screen that <font color = 'green';> the light gray square </font> was chosen in that round <br>
+            and the dark gray square was chosen in the previous round. 
+            <br><br/>
           When you are ready, press the  <b>SPACE BAR</b> to continue. 
           <br><br/> 
           </div>`;
