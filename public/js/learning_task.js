@@ -1,8 +1,7 @@
 /** to do list */
 // test version
-// check for an error in the code: feedback at start of part 2 the same image!
 // check if eyetracking data is saved correctly
-// change the second calibration phase
+
 
 /**************/
 /** Constants */
@@ -22,7 +21,7 @@ const feedbackDuration = 2000;
 var subject_id = jsPsych.randomization.randomID(7);
 
 var payFailQuiz = '50c';
-var payFailCalibration = '50c';
+var payFailCalibration = '75c';
 
 
 function getRandomInt(min, max) {
@@ -221,10 +220,22 @@ function genSequence(a, b, c, d, e, f) {
     return shuffledOutput;
 };
 
-// randomize the payoffs for each participant
-var payoff_shuffle = jsPsych.randomization.shuffle(payoff_levels);
+// random shuffle of levels for payoffs and images
+var randLevels = jsPsych.randomization.shuffle([0,1,2,3,4,5]);
+
+// generate placeholder sequence
+var shuffledSequence = genSequence(randLevels[0],randLevels[1],randLevels[2],randLevels[3],randLevels[4],randLevels[5]);
+
 // select the payoffs according to the sequence
-var payoffs_base = genSequence(payoff_shuffle[0], payoff_shuffle[1], payoff_shuffle[2], payoff_shuffle[3], payoff_shuffle[4], payoff_shuffle[5]);
+function get_payoffs_base(shuffledSequence,payoff_levels){
+    var payoffs_base = [];
+    for (var i = 0; i < shuffledSequence.length; i++){
+        payoffs_base.push([payoff_levels[shuffledSequence[i][0]],payoff_levels[shuffledSequence[i][1]]]);
+    }
+    return payoffs_base;
+}
+
+var payoffs_base = get_payoffs_base(shuffledSequence,payoff_levels);
 
 function reshapePayoff(selectedItems) {
     var reshapedItems = [];
@@ -240,6 +251,7 @@ function reshapePayoff(selectedItems) {
     return reshapedItemsFinal;
 }
 
+// generate noise for each payoff
 function genEpsilon() {
     var repeatedItems = [].concat(...Array(52 * 2).fill([0, 1, 2, 3]));
     repeatedItems.push(0, 3, 0, 3);
@@ -272,24 +284,26 @@ payoffs_shown = reshapePayoff(payoffs_shown);
 //  var array = [new Array(20), new Array(20), new Array(20)]; //..your 3x20 array
 //  getCol(array, 0); //Get first column
 
-
-var get_images = function () {
+// select images for the sequence
+var get_images = function (shuffledSequence,fractal_images) {
+    var color_sequence = [];
     var color_cycle = [0, 1, 2, 3, 4, 5]
     // randomize the colors for each participant
     var color_shuffle = jsPsych.randomization.shuffle(color_cycle);
+    var fractal_shuffle = [];
+    for (var k = 0; k < 6; k++){
+        fractal_shuffle.push(fractal_images[color_shuffle[k]])
+    }
     // select the image url according to the sequence
-    var color_sequence = genSequence(fractal_images[color_shuffle[0]], fractal_images[color_shuffle[1]],
-        fractal_images[color_shuffle[2]], fractal_images[color_shuffle[3]], fractal_images[color_shuffle[4]],
-        fractal_images[color_shuffle[5]]);
+    for (var i = 0; i < shuffledSequence.length; i++){
+        color_sequence.push([fractal_shuffle[shuffledSequence[i][0]],fractal_shuffle[shuffledSequence[i][1]]]);
+    }
+    // var color_sequence = genSequence(fractal_images[color_shuffle[0]], fractal_images[color_shuffle[1]],
+    //     fractal_images[color_shuffle[2]], fractal_images[color_shuffle[3]], fractal_images[color_shuffle[4]],
+    //     fractal_images[color_shuffle[5]]);
     return color_sequence;
 };
 
-
-// function makeSurveyCode(status) {
-//     uploadSubjectStatus(status);
-//     var prefix = { 'success': 'cg', 'failed': 'sb' }[status]
-//     return `${prefix}${subject_id}`;
-// }
 
 function makeSurveyCode(status) {
     uploadSubjectStatus(status);
@@ -455,7 +469,7 @@ var inital_eye_calibration = {
                     if (!success && calibrationAttempt == calibrationMax) {
                         survey_code = makeSurveyCode('failed');
                         closeFullscreen();
-                        jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 50 cents for making it this far. Your survey code is: ${survey_code}${payFailCalibration}. Thank you for signing up!`);
+                        jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 75 cents for making it this far. Your survey code is: ${survey_code}${payFailCalibration}. Thank you for signing up!`);
                     }
                 }
             }
@@ -1139,7 +1153,7 @@ var choiceOverview = {
     on_finish: function () {
         webgazer.resume(),
         document.body.style.cursor = 'none';
-        img_pairs = get_images();
+        img_pairs = get_images(shuffledSequence,fractal_images);
     }
 }
 
@@ -1190,9 +1204,10 @@ var rand_choices = getRandomChoices(payoffs_shown.length);
 
 // get images for feedback phase
 function getChoiceImg(img_choices){
+    // note: for choice_count not in terms of keypress but in terms of what was shown before
     if(choice_count!==0){
-        var r0 = [];
-        var r1 = [];
+        var r0 = []; // choice on previous trial
+        var r1 = []; // choice on current trial
         // left 
         if(img_choices[choice_count-1].key_press === 37){
             if(img_choices[choice_count].key_press === 37){
@@ -1232,10 +1247,10 @@ function getChoiceImg(img_choices){
         // no choice
         if(img_choices[choice_count-1].key_press !== 39 && img_choices[choice_count-1].key_press !== 37){
             if(rand_choices[choice_count-1]===0){
-                r0 = img_choices[choice_count].left_stimulus;
+                r0 = img_choices[choice_count-1].left_stimulus;
             }
             if(rand_choices[choice_count-1]===1){
-                r0 = img_choices[choice_count].right_stimulus;
+                r0 = img_choices[choice_count-1].right_stimulus;
             }
             //replace with random selection
             if(img_choices[choice_count].key_press === 37){
@@ -1585,7 +1600,7 @@ function binary_choice_state_logger(finish_data_accuracy) {
         },
             validate_counter = 0;
     }
-    if (finish_data_accuracy < validationAccuracy & validate_counter <= 2) {
+    if (finish_data_accuracy < validationAccuracy & validate_counter <= 4) {
         binary_choice_states = {
             doCalibration: false,
             dovalidation: true,
@@ -1593,7 +1608,7 @@ function binary_choice_state_logger(finish_data_accuracy) {
         },
             validate_counter += 1;
     }
-    if (validate_counter == 3) {
+    if (validate_counter == 5) {
         binary_choice_states = {
             //set the default 
             doCalibration: true,
@@ -1722,13 +1737,13 @@ var learning_choice_1 = {
             stimulus_bottom_payoff_base: () => pointsBaseLast[1],
             stimulus_bottom_payoff_noise: () => pointsNoiseLast[1],
             on_finish: function (data) {
-                feedback_data.push(data)
+                feedback_data.push(data);
                 feedback_count++;
             },
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 3, //63
+    loop_function: () => choice_count < 5, //63
 };
 
 
@@ -1820,13 +1835,14 @@ var learning_choice_2 = {
             stimulus_top_payoff_noise: () => pointsNoiseLast[0],
             stimulus_bottom_payoff_base: () => pointsBaseLast[1],
             stimulus_bottom_payoff_noise: () => pointsNoiseLast[1],
-            on_finish: function () {
+            on_finish: function (data) {
+                feedback_data.push(data);
                 feedback_count++;
             },
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 6, // payoffs_base.length
+    loop_function: () => choice_count < 10, // payoffs_base.length
 };
 
 
