@@ -414,7 +414,7 @@ var eyeTrackingNote = {
             If you are back on this page, it means the calibration and validation did not work as well as we would like.  <br/>
             Please read the tips above again, make any adjustments, and try again.  <br/>
             There are only <b>THREE</b> chances to get this right.  <br/>
-            Otherwise, the study cannot proceed and you will only receive 50 cents for participating.  </font><br/>
+            Otherwise, the study cannot proceed and you will only receive a small pay for participating.  </font><br/>
             <br><br/>
              <font size=5px; >When you are ready, press the <b>SPACE BAR</b> to bring up the video feed and make these adjustments. </font></div>`,
     post_trial_gap: 500,
@@ -1193,6 +1193,7 @@ var recalibrationInstruction = {
 
 var recalibrationMax = 3;
 var recalibrationAttempt = 0;
+var resuccess = false; //update if there's a success
 
 var recalibration = {
     timeline: [
@@ -1214,8 +1215,8 @@ var recalibration = {
                     jsPsych.endExperiment('The study has ended. You may have exited full screen mode, or your browser may not be compatible with our study.');
                 } else {
                     recalibrationAttempt++;
-                    if (data.accuracy >= validationAccuracys[recalibrationAttempt - 1]) success = true;
-                    if (!success && recalibrationAttempt == recalibrationMax) {
+                    if (data.accuracy >= validationAccuracys[recalibrationAttempt - 1]) resuccess = true;
+                    if (!resuccess && recalibrationAttempt == recalibrationMax) {
                         survey_code = makeSurveyCode('failed');
                         closeFullscreen();
                         jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 75 cents for making it this far. Your survey code is: ${survey_code}${payFailCalibration2}. Thank you for signing up!`);
@@ -1224,7 +1225,7 @@ var recalibration = {
             }
         }
     ],
-    loop_function: () => (recalibrationAttempt < recalibrationMax) && (!success),
+    loop_function: () => (recalibrationAttempt < recalibrationMax) && (!resuccess),
 };
 
 
