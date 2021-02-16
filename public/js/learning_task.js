@@ -1,7 +1,5 @@
 /** to do list */
-// test version
-// check if eyetracking data is saved correctly
-
+// condition 2
 
 /**************/
 /** Constants */
@@ -20,16 +18,17 @@ const feedbackDuration = 2000;
 
 var subject_id = jsPsych.randomization.randomID(7);
 
-var payFailQuiz = '50c';
-var payFailCalibration1 = '10c';
-var payFailCalibration2 = '75c';
+var payFailQuiz = '75c';
+var payFailCalibration1 = '50c';
+var payFailCalibration2 = '200c';
+
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // choose randomly the condition for the subject
-var condition = getRandomInt(1,2);
+var condition = 2; //getRandomInt(1,2);
 var imageSet = getRandomInt(1,2);
 
 
@@ -325,11 +324,44 @@ function uploadSubjectStatus(status) {
 /******** Trials *******/
 /***********************/
 
+/** full screen */
+var paymentInfo = {
+    type: 'html-keyboard-response',
+    stimulus: `<div> In order to receive payment for this study, you will need to provide Venmo/Paypal or Zelle information. <br/>
+                <br><br/>
+                When you are ready, press the SPACE BAR to continue. </div>`,
+    post_trial_gap: 500,
+    choices: ['spacebar'],
+};
+
+var payment_options = ["Venmo",
+                        "Paypal",
+                        "Zelle"];
+
+var payment_data = [];
+                        
+var paymentQuestion = {
+    type: 'survey-multi-choice',
+    questions: [
+        { prompt: "How would you like to be paid?", name: 'Payment', options: payment_options, required: true }
+    ],
+    on_finish: function (data) {
+        payment_data.push(data);
+    }
+}
+
+var personalInfoQuestion = {
+    type: 'survey-text',
+    questions: [
+        { prompt: "What is your name?", rows: 1, columns: 50, required: true },
+        { prompt: "What is the account name or email address associated with your Venmo/Paypal/Zelle account? ", rows: 1, columns: 50, required: true },
+    ],
+    preamble: `<div>Please answer the following questions. </div>`,
+};
 
 var start_exp_survey_trial = {
     type: 'survey-text',
     questions: [
-        { prompt: "What's your worker ID?", rows: 2, columns: 50, required: true },
         { prompt: "What's your age?", rows: 1, columns: 50, required: true },
         { prompt: "What's your gender?", rows: 1, columns: 50, require: true },
     ],
@@ -427,7 +459,7 @@ var eyeTrackingNote = {
 
 
 //eye tracking parameters
-var calibrationMax = 3;
+var calibrationMax = 1;
 var calibrationAttempt = 0;
 var success = false; //update if there's a success
 var eye_calibration_state = {
@@ -440,8 +472,8 @@ var init_flag = function () {
     } else return false;
 };
 
-var validationTols = [130, 165, 200];
-var validationAccuracys = [0.8, 0.7, 0.6];
+var validationTols = [200];
+var validationAccuracys = [0.6];
 
 /** first we need a calibration and validation step before entering into the main choice task */
 var inital_eye_calibration = {
@@ -469,7 +501,7 @@ var inital_eye_calibration = {
                     if (!success && calibrationAttempt == calibrationMax) {
                         survey_code = makeSurveyCode('failed');
                         closeFullscreen();
-                        jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 10 cents for making it this far. Your survey code is: ${survey_code}${payFailCalibration1}. Thank you for signing up!`);
+                        jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 50 cents for making it this far. Your survey code is: ${survey_code}${payFailCalibration1}. Thank you for signing up!`);
                     }
                 }
             }
@@ -1060,7 +1092,7 @@ var controlQuestion5Response = {
         if(nCorrect<4){
             survey_code = makeSurveyCode('failed');
             closeFullscreen();
-            jsPsych.endExperiment(`We are sorry! Unfortunately, you have answered only ${nCorrect} questions correctly.  </br> You will receive 50 cents for making it this far. Your survey code is: ${survey_code}${payFailQuiz}. Thank you for signing up!`);
+            jsPsych.endExperiment(`We are sorry! Unfortunately, you have answered only ${nCorrect} questions correctly.  </br> You will receive 75 cents for making it this far. Your survey code is: ${survey_code}${payFailQuiz}. Thank you for signing up!`);
         }
     }
 }
@@ -1172,25 +1204,6 @@ var recalibrationInstruction = {
     post_trial_gap: 500
 };
 
-
-// var recalibration = {
-//     timeline: [
-//         recalibrationInstruction,
-//         {
-//             type: "eye-tracking",
-//             doInit: () => init_flag(),
-//             IsInterTrial: true,
-//             doCalibration: true,
-//             calibrationDots: realCaliDot, // change to 12
-//             calibrationDuration: 3,
-//             doValidation: true,
-//             validationDots: realCaliDot,// change to 12
-//             validationDuration: 2,
-//             validationTol: 200
-//         }
-//     ],
-// };
-
 var recalibrationMax = 3;
 var recalibrationAttempt = 0;
 var resuccess = false; //update if there's a success
@@ -1219,7 +1232,7 @@ var recalibration = {
                     if (!resuccess && recalibrationAttempt == recalibrationMax) {
                         survey_code = makeSurveyCode('failed');
                         closeFullscreen();
-                        jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 75 cents for making it this far. Your survey code is: ${survey_code}${payFailCalibration2}. Thank you for signing up!`);
+                        jsPsych.endExperiment(`Sorry, unfortunately the webcam calibration has failed.  We can't proceed with the study.  </br> You will receive 2 dollars for making it this far. Your survey code is: ${survey_code}${payFailCalibration2}. Thank you for signing up!`);
                     }
                 }
             }
@@ -1227,6 +1240,7 @@ var recalibration = {
     ],
     loop_function: () => (recalibrationAttempt < recalibrationMax) && (!resuccess),
 };
+
 
 
 
@@ -1772,7 +1786,6 @@ var learning_choice_1 = {
             realOrPrac: false,
             exp_condition: condition,
             exp_image_set: imageSet,
-            random_choice: () => rand_choices[choice_count],
             stimulus_top_payoff_base: () => pointsBaseLast[0],
             stimulus_top_payoff_noise: () => pointsNoiseLast[0],
             stimulus_bottom_payoff_base: () => pointsBaseLast[1],
@@ -1784,7 +1797,7 @@ var learning_choice_1 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 5, //63
+    loop_function: () => choice_count < 63, //63
 };
 
 
@@ -1850,6 +1863,7 @@ var learning_choice_2 = {
             stimulus_duration: 3000, // 3000
             exp_condition: condition,
             exp_image_set: imageSet,
+            random_choice: () => rand_choices[choice_count],
             stimulus_left_payoff_base: () => payoffs_base[choice_count][0],
             stimulus_left_payoff_noise: () => payoffs_noise[choice_count][0],
             stimulus_right_payoff_base: () => payoffs_base[choice_count][1],
@@ -1883,7 +1897,7 @@ var learning_choice_2 = {
             timing_response: feedbackDuration
         }        
     ],
-    loop_function: () => choice_count < 10, // payoffs_base.length
+    loop_function: () => choice_count < payoffs_base.length, // payoffs_base.length
 };
 
 
@@ -2047,10 +2061,10 @@ function getPointsEarned(img_choices,payoffs_shown){
 }
 
 function getPayoffEarned(points_earned){
-    const minPayoff = 2.5; // min earnings = 2.5
+    const minPayoff = 9; // min earnings = 2.5 + 2 from passing everything - 9 now
     const thresholdPay = 1505;
     var payoff_earned = [];
-    payoff_earned = 0.02*(points_earned - thresholdPay); // max earnings - max possible points 350
+    payoff_earned = 0.04*(points_earned - thresholdPay); // max earnings - max possible points 350
     if(payoff_earned<=minPayoff) {
         return minPayoff;
     } else {
@@ -2108,7 +2122,7 @@ function getRandomInt(min, max) {
 
 var pay = 0;
 var points = 0;
-var successExp = false
+var successExp = false;
 var success_guard = {
     type: 'call-function',
     func: () => { 
@@ -2186,6 +2200,9 @@ var trialcounter;
 function startExperiment() {
     jsPsych.init({
         timeline: [
+            paymentInfo,
+            paymentQuestion,
+            personalInfoQuestion,
             start_exp_survey_trial,
             fullscreenEnter,
             eyeTrackingInstruction1, 
@@ -2226,11 +2243,11 @@ function startExperiment() {
             trialcounter = jsPsych.data.get().count();
             if (successExp) {
                 closeFullscreen()
+                survey_code = makeSurveyCode('success');
                 document.body.style.cursor = 'pointer'
                 jsPsych.endExperiment(`<div>
                 Thank you for your participation! You can close the browser to end the experiment now. </br>
                 The webcam will turn off when you close the browser. </br>
-                Your survey code is: ${makeSurveyCode('success')}${pay*100} </br>
                 We will send you $ ${pay} as your participant fee soon! </br> 
                 </div>`);
             }
@@ -2245,6 +2262,10 @@ function startExperiment() {
 
     });
 };
+
+
+// no longer needed 
+// Your survey code is: ${makeSurveyCode('success')}${pay*100} </br>
 
 function saveData() {
     var xhr = new XMLHttpRequest();
