@@ -18,9 +18,9 @@ const feedbackDuration = 2000;
 
 var subject_id = jsPsych.randomization.randomID(7);
 
-var payFailQuiz = '75c';
-var payFailCalibration1 = '50c';
-var payFailCalibration2 = '200c';
+var payFailQuiz = '300c'; //'75c';
+var payFailCalibration1 = '200c'; //'50c';
+var payFailCalibration2 = '400c'; //'200c';
 
 
 function getRandomInt(min, max) {
