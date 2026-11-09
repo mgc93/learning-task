@@ -12,34 +12,14 @@ const starttime = Date.now();
 const Dropbox = require("dropbox").Dropbox;
 const fetch = require("node-fetch");
 const body_parser = require("body-parser");
-//require("dotenv").config();
 
-//var config = require('./config.json');
-
-
-//var sdk = BoxSDK.getPreconfiguredInstance(config);
-//var client = sdk.getAppAuthClient('enterprise');
-
-
-// var sdk = new BoxSDK( {
-//     clientID: '6y1owyz4gjq33hvjhknvl3ny6x6y685j',
-//     clientSecret: 'FBbc8CMZKoj2wwcnw321txdZw3mSBc3V'
-// });
-
-// Create a basic API client, which does not automatically refresh the access token
-//var client = sdk.getBasicClient('JKfo9lWcymRSQVTVZcjm97eAybxHzvNr');
-
-//var folderID = '0';
-
-
-
-// var saveBox = function(content, filename) {
-//     client.files.uploadFile( folderID, filename,content)
-
-// };
+// Dropbox token is read from the environment (Heroku config var), never hard-coded.
+if (!process.env.DROPBOX_TOKEN) {
+    console.error("DROPBOX_TOKEN environment variable is not set; data will not be saved.");
+}
 
 const dbx = new Dropbox({
-    accessToken: 'eBpNn9TYElsAAAAAAAAAAXW9QmEYqqOfJHlcBniDBPC_q30Tkwc8m9e8k1WFXGdy',
+    accessToken: process.env.DROPBOX_TOKEN,
     fetch
 });
 
